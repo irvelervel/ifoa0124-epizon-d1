@@ -21,6 +21,31 @@ const mainReducer = function (state = initialState, action) {
   // restituisce sempre lo stesso OUTPUT
 
   switch (action.type) {
+    // ora che abbiamo cominciato a "dispatchare" le azioni, è necessario ISTRUIRE il nostro reducer
+    // sul cosa fare quando le intercetta!
+
+    case 'ADD_TO_CART':
+      return {
+        // OGNI case del reducer deve ritornare un oggetto -> IL NUOVO STATO DELL'APPLICATIVO
+        ...state, // ricopiamo dentro TUTTE le coppie chiave/valore di state, per evitare di perdere altre proprietà
+        // al di fuori di cart
+        cart: {
+          ...state.cart, // di nuovo riparto dal cart di prima, per evitare di perdere altre potenziali proprietà
+          // di questo sotto-oggetto...
+          content: state.cart.content.concat(action.payload),
+          //   content: [...state.cart.content, action.payload]
+        },
+      }
+
+    case 'DELETE_FROM_CART':
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          content: state.cart.content.filter((book, i) => i !== action.payload),
+        },
+      }
+
     default:
       // il default entra in gioco quando i "case" precedenti non vengono attivati
       // il default come tutti i case deve RITORNARE il nuovo stato dell'applicativo

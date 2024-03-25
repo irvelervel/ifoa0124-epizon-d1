@@ -1,7 +1,10 @@
 import { Col, Row, Button } from 'react-bootstrap'
 import { FaShoppingCart } from 'react-icons/fa'
+import { useDispatch } from 'react-redux'
 
 const BookDetail = ({ bookSelected }) => {
+  const dispatch = useDispatch()
+
   return (
     <div className="mt-3 mb-4 mb-lg-0">
       {bookSelected ? (
@@ -30,7 +33,22 @@ const BookDetail = ({ bookSelected }) => {
                 <span className="fw-bold">Price:</span>&nbsp;
                 {bookSelected.price}$
               </p>
-              <Button className="d-flex align-items-center" onClick={() => {}}>
+              <Button
+                className="d-flex align-items-center"
+                onClick={() => {
+                  // qui dentro dobbiamo inserire la logica necessaria per aggiungere bookSelected
+                  // all'array content dentro cart
+                  // non possiamo solamente aggiungere un libro all'array, noi dobbiamo creare un NUOVO
+                  // stato dell'applicativo in cui quell'array non è più vuoto...!
+                  // -> dobbiamo "DISPATCHARE" un'action
+                  dispatch({
+                    // la proprietà "type" DESCRIVE l'azione
+                    type: 'ADD_TO_CART',
+                    // la proprietà "payload" aggiunge un DATO all'action
+                    payload: bookSelected, // passo l'intero oggetto
+                  })
+                }}
+              >
                 <span className="me-2">AGGIUNGI AL</span>
                 <FaShoppingCart />
               </Button>

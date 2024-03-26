@@ -48,3 +48,7 @@
 .background-div a {
   text-decoration: none;
 }
+
+.text-sm {
+  font-size: 0.8em;
+}

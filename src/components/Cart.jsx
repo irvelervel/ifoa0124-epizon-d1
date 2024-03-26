@@ -1,6 +1,7 @@
 import { Col, Row, Button } from 'react-bootstrap'
 import { FaTrash } from 'react-icons/fa'
 import { useSelector, useDispatch } from 'react-redux'
+import { DELETE_FROM_CART, deleteFromCartAction } from '../redux/actions'
 
 const Cart = () => {
   // qui dentro ci vanno gli hooks!
@@ -22,10 +23,7 @@ const Cart = () => {
                 variant="danger"
                 onClick={() => {
                   // da qui dentro dovremmo eliminare il libro selezionato dal carrello!
-                  dispatch({
-                    type: 'DELETE_FROM_CART',
-                    payload: i,
-                  })
+                  dispatch(deleteFromCartAction(i))
                 }}
               >
                 <FaTrash />

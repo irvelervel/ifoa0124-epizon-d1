@@ -1,3 +1,5 @@
+import { ADD_TO_CART, DELETE_FROM_CART } from '../actions'
+
 const initialState = {
   // è necessario pensare e costruire lo STATO INIZIALE per Redux
   // lo stato iniziale, come quello di un componente React, dovrà già ospitare tutte le proprietà
@@ -8,6 +10,11 @@ const initialState = {
   cart: {
     // cart è un sotto-oggetto di Redux, che ospiterà TUTTE le informazioni relative al carrello
     content: [], // content rappresenterà letteralmente il "contenuto" del nostro carrello
+  },
+  user: {
+    name: '',
+    isLoggedIn: false,
+    isAdmin: false,
   },
 }
 
@@ -24,7 +31,7 @@ const mainReducer = function (state = initialState, action) {
     // ora che abbiamo cominciato a "dispatchare" le azioni, è necessario ISTRUIRE il nostro reducer
     // sul cosa fare quando le intercetta!
 
-    case 'ADD_TO_CART':
+    case ADD_TO_CART:
       return {
         // OGNI case del reducer deve ritornare un oggetto -> IL NUOVO STATO DELL'APPLICATIVO
         ...state, // ricopiamo dentro TUTTE le coppie chiave/valore di state, per evitare di perdere altre proprietà
@@ -37,7 +44,7 @@ const mainReducer = function (state = initialState, action) {
         },
       }
 
-    case 'DELETE_FROM_CART':
+    case DELETE_FROM_CART:
       return {
         ...state,
         cart: {

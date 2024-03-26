@@ -1,9 +1,13 @@
 import { Col, Row, Button } from 'react-bootstrap'
 import { FaShoppingCart } from 'react-icons/fa'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToCartAction } from '../redux/actions'
 
 const BookDetail = ({ bookSelected }) => {
   const dispatch = useDispatch()
+  const userLoggedIn = useSelector((state) => {
+    return state.user.isLoggedIn
+  })
 
   return (
     <div className="mt-3 mb-4 mb-lg-0">
@@ -35,23 +39,27 @@ const BookDetail = ({ bookSelected }) => {
               </p>
               <Button
                 className="d-flex align-items-center"
+                disabled={!userLoggedIn}
                 onClick={() => {
                   // qui dentro dobbiamo inserire la logica necessaria per aggiungere bookSelected
                   // all'array content dentro cart
                   // non possiamo solamente aggiungere un libro all'array, noi dobbiamo creare un NUOVO
                   // stato dell'applicativo in cui quell'array non è più vuoto...!
                   // -> dobbiamo "DISPATCHARE" un'action
-                  dispatch({
-                    // la proprietà "type" DESCRIVE l'azione
-                    type: 'ADD_TO_CART',
-                    // la proprietà "payload" aggiunge un DATO all'action
-                    payload: bookSelected, // passo l'intero oggetto
-                  })
+                  dispatch(addToCartAction(bookSelected))
+                  // invece che "dispatchare" l'oggetto dell'azione, dispatchiamo l'ACTION CREATOR,
+                  // ovvero una funzione che RITORNA la action (dobbiamo fornire all'action creator
+                  // il bookSelected, che diventerà il payload. Vedi redux/actions/index.js )
                 }}
               >
                 <span className="me-2">AGGIUNGI AL</span>
                 <FaShoppingCart />
               </Button>
+              {!userLoggedIn && (
+                <p className="text-sm">
+                  Esegui il login per acquistare questo libro
+                </p>
+              )}
             </Col>
           </Row>
         </>

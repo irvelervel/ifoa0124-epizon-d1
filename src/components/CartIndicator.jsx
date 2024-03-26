@@ -1,9 +1,11 @@
-import { Button } from 'react-bootstrap'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 import { useNavigate } from 'react-router-dom'
 import { FaShoppingCart } from 'react-icons/fa'
 
 // per LEGGERE qualsiasi proprietà dal Redux Store si deve utilizzare l'hook chiamato useSelector da react-redux
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { useState } from 'react'
 // useSelector è l'hook "in LETTURA"
 // con i componenti a classe si può usare una funzione chiamata mapStateToProps
 
@@ -12,21 +14,50 @@ const CartIndicator = () => {
   // 1) utilizziamo gli hooks solamente nei componenti a funzione
   // 2) utilizziamo gli hooks al di fuori di if/else, loops, funzioni etc.
 
+  const [inputFieldValue, setInputFieldValue] = useState('')
+
+  const dispatch = useDispatch()
+
   const cartLength = useSelector((state) => {
     return state.cart.content.length
   })
 
+  const userLoggedIn = useSelector((state) => state.user.isLoggedIn) // inizialmente è false
+
   const navigate = useNavigate()
+
+  const handleSubmit = function (e) {
+    e.preventDefault() // la pagina non si aggiornerà
+    // ora invio il valore dell'input, salvato localmente in inputFieldValue verso il Redux Store
+    // tramite il dispatch di una action
+    dispatch({
+      type: 'USER_LOGIN',
+      payload: inputFieldValue,
+    })
+  }
 
   return (
     <div className="d-flex justify-content-end my-4">
-      <Button
-        onClick={() => navigate('/cart')}
-        className="d-flex align-items-center"
-      >
-        <FaShoppingCart />
-        <span className="ms-2">{cartLength}</span>
-      </Button>
+      {userLoggedIn ? (
+        <Button
+          onClick={() => navigate('/cart')}
+          className="d-flex align-items-center"
+        >
+          <FaShoppingCart />
+          <span className="ms-2">{cartLength}</span>
+        </Button>
+      ) : (
+        <Form onSubmit={handleSubmit}>
+          <Form.Control
+            type="text"
+            placeholder="Esegui il login"
+            value={inputFieldValue}
+            onChange={(e) => {
+              setInputFieldValue(e.target.value)
+            }}
+          />
+        </Form>
+      )}
     </div>
   )
 }

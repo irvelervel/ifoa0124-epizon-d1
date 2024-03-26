@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import userReducer from '../reducers/userReducer'
 import cartReducer from '../reducers/cartReducer'
+import bookReducer from '../reducers/bookReducer'
 
 // configureStore è la funzione principale di redux, quella che GENERA lo stato condiviso
 
@@ -10,6 +11,7 @@ import cartReducer from '../reducers/cartReducer'
 const unifiedReducer = combineReducers({
   user: userReducer, // ricostruisce la fetta user
   cart: cartReducer, // ricostruisce la fetta cart
+  book: bookReducer, // ricostruisce la fetta book
 })
 
 const store = configureStore({

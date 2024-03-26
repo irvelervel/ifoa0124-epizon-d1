@@ -2,30 +2,19 @@ import { useState, useEffect } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import BookList from './BookList'
 import BookDetail from './BookDetail'
+import { useDispatch, useSelector } from 'react-redux'
+import { getBooksAction } from '../redux/actions'
 
 const BookStore = () => {
-  const [books, setBooks] = useState([])
   const [bookSelected, setBookSelected] = useState(null)
+  const dispatch = useDispatch()
+
+  const books = useSelector((state) => state.book.available) // l'array di libri nel Redux Store
 
   useEffect(() => {
-    getBooks()
+    dispatch(getBooksAction()) // dispatcho da BookStore getBooksAction(), l'action creator
+    // con i superpoteri che ritornava una funzione asincrona (e che si occupa di riempire il Redux Store)
   }, [])
-
-  const getBooks = async () => {
-    try {
-      let resp = await fetch(
-        'https://striveschool-api.herokuapp.com/food-books'
-      )
-      if (resp.ok) {
-        let fetchedBooks = await resp.json()
-        setBooks(fetchedBooks)
-      } else {
-        console.log('error')
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   const changeBook = (book) => setBookSelected(book)
 
